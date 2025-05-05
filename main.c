@@ -4,33 +4,41 @@
 #include <stdio.h>
 #include <locale.h>
 
+typedef struct {
+    unsigned is_even : 1; 
+} Number;
+
 int main() {
     setlocale(LC_ALL, "rus");
 
-    int число;
-    char лишний_символ;
-    int результат;
+    int value;
+    char extra_char;
+    int input_result;
 
     do {
         printf("Введите целое число: ");
-        результат = scanf_s("%d", &число);
+        input_result = scanf_s("%d", &value);
 
-        лишний_символ = getchar();
-        if (результат == 1 && лишний_символ == '\n') {
+        extra_char = getchar();
+        if (input_result == 1 && extra_char == '\n') {
             break;
-        } else {
+        }
+        else {
             printf("Ошибка ввода! Введите только одно целое число.\n");
 
-            while (лишний_символ != '\n' && лишний_символ != EOF) {
-                лишний_символ = getchar();
+            while (extra_char != '\n' && extra_char != EOF) {
+                extra_char = getchar();
             }
         }
     } while (1);
 
-    if ((число & 1) == 0) {
-        printf("Число %d является четным.\n", число);
-    } else {
-        printf("Число %d является нечетным.\n", число);
+    Number number = { .is_even = (value & 1) == 0 }; 
+
+    if (number.is_even) {
+        printf("Число %d является четным.\n", value);
+    }
+    else {
+        printf("Число %d является нечетным.\n", value);
     }
 
     return 0;
